@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pan-Zoom Control</title>
+
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+</head>
+<body>
+    <h1 class="text-center text-3xl font-bold my-20">
+        < Canvas Container >
+    </h1>
+
+    <h1 class="text-center font-bold my-20">
+        Pan-zoom icons required MDI (npm i @mdi/font)
+    </h1>
+
+    <!-- Panzoom Area -->
+    <div class="flex fixed right-2 bottom-2 cursor-default">
+        <!-- Minimap -->
+        <div class="ngn-minimap">
+            <div class="flex-initial relative
+                bg-white bg-opacity-80
+                rounded shadow
+                p-2 py-5 mr-2">
+                <div class="h-full w-full">
+                    <div class="bg-gray-50 border border-gray-200 
+                        py-24 px-5">
+                        Add some minimap
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pan Controls -->
+        <div class="flex-initial bg-white bg-opacity-90
+            rounded shadow p-2 py-2
+            cursor-default flex flex-col
+            hover:bg-opacity-100
+            lg:bottom-3 lg:right-3
+            transition duration-200 ease-in-out">
+
+        <!-- Pan Only -->
+        <button class="w-9 h-9 min-w-min
+                rounded-full text-lg mb-2
+                bg-gray-300 bg-opacity-30
+                border border-gray-300 border-opacity-30
+                hover:bg-yellow-400 hover:bg-opacity-50
+                outline-none hover:shadow-md
+                transition duration-200 ease-in-out"
+            title="Pan-only Mode">
+            <i class="mdi mdi-focus-field"></i>
+        </button>
+
+        <!-- Pan Reset -->
+        <button class="w-9 h-9 min-w-min
+                rounded-full text-lg mb-2
+                bg-gray-300 bg-opacity-30
+                border border-gray-300 border-opacity-30
+                hover:bg-yellow-400 hover:bg-opacity-50
+                outline-none hover:shadow-md
+                transition duration-200 ease-in-out"
+            title="Reset Pan View">
+            <i class="mdi mdi-image-filter-center-focus"></i>
+        </button>
+
+        <!-- Zoom Controls-->
+        <div class="flex flex-col">
+            <button class="w-9 h-9 min-w-min
+                rounded-none rounded-t-full text-lg
+                bg-gray-300 bg-opacity-30
+                border border-gray-300 border-opacity-30
+                hover:bg-yellow-400 hover:bg-opacity-50
+                outline-none hover:shadow-md
+                transition duration-200 ease-in-out
+                mb-0 border
+                border-gray-300 border-opacity-30
+                hover:border-yellow-200"
+            title="Zoom In">
+            <i class="mdi mdi-minus"></i>
+            </button>
+
+            <div class="bg-gray-300 bg-opacity-30
+                border border-b border-gray-300 border-opacity-30
+                font-medium py-2 cursor-default
+                w-9 h-9 min-w-min
+                text-xs text-center
+                inline-block align-baseline">
+                123%
+            </div>
+
+            <button class="w-9 h-9 min-w-min
+                rounded-none rounded-b-full text-lg
+                bg-gray-300 bg-opacity-30
+                border border-gray-300 border-opacity-30
+                hover:bg-yellow-400 hover:bg-opacity-50
+                outline-none hover:shadow-md
+                transition duration-200 ease-in-out
+                mb-0 border
+                border-gray-300 border-opacity-30
+                hover:border-yellow-200"
+            title="Zoom Out">
+            <i class="mdi mdi-plus"></i>
+            </button>
+        </div>
+
+        <!-- Show Minimap -->
+        <button class="w-9 h-9 min-w-min
+                rounded-full text-lg mt-2
+                bg-gray-300 bg-opacity-30
+                border border-gray-300 border-opacity-30
+                hover:bg-yellow-400 hover:bg-opacity-50
+                outline-none hover:shadow-md
+                transition duration-200 ease-in-out"
+            title="Show Mini Map">
+            <i class="mdi mdi-map-outline"></i>
+        </button>
+        </div>
+    </div>
+</body>
+</html>
