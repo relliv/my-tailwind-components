@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Translate Clone</title>
+
+  <!-- MDI Icons -->
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css" />
+
+  <!-- toastify.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.js"></script>
+
+  <!-- Tailwind -->
+  <script src="https://cdn-tailwindcss.vercel.app/"></script>
+
+  <!-- AlpineJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.8.1/cdn.min.js" defer></script>
+
+  <!-- translate.js -->
+  <script src="https://cdn.jsdelivr.net/npm/translate@1/translate.min.js"></script>
+
+  <!-- clipboard.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+
+  <style>
+    header i,
+    header i::before {
+      font-size: 24px !important;
+      height: 20px !important;
+    }
+
+    /* apps popup container */
+    .apps-container {
+      width: 310px;
+      z-index: 1000;
+    }
+
+    /* apps container scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 7px;
+      background-color: #f5f5f5;
+      margin-right: 5px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar:horizontal {
+      height: 7px;
+      background-color: #f5f5f5;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      /* box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2); */
+      background-color: #fff;
+      border-radius: 7px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: #e8e8e8;
+      margin-right: 5px;
+    }
+
+    /* alpinejs */
+    [x-cloak] {
+      display: none !important;
+    }
+
+    .mdi-32px::before {
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Page Container -->
+  <div class="relative bg-white" x-cloak
+    x-data="{ appsPopupIsActive: false, appsIsOpen: false, sourceText: 'No problem is too small or too trivial if we can really do something about it.\n\nRichard Feynman', translatedText: 'Translation' }"
+    x-init="translatedText = await translation(sourceText); appInit();">
+    <!-- Header Container -->
+    <div class="flex">
+      <header class="flex flex-grow px-5 py-2 border-b border-gray-200">
+        <!-- Menu and Logo -->
+        <div class="flex-none">
+          <div class="flex flex-grow mt-1">
+            <button class="hover:bg-gray-100 rounded-full w-9 h-9 mr-2 
+              transition-colors duration-100">
+              <i class="mdi mdi-menu text-gray-500"></i>
+            </button>
+
+            <a href="https://translate.google.com.tr">
+              <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Logo"
+                class="mt-2" />
+            </a>
+
+            <div class="ml-2 my-auto text-lg font-medium text-gray-500">
+              Translate
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Space -->
+        <div class="flex-grow"></div>
+
+        <!-- Apps and Avatar -->
+        <div class="flex-none">
+          <!-- Buttons -->
+          <div class="flex">
+            <button class="hover:bg-gray-100 rounded-full 
+              w-9 h-9 mt-1 mr-2
+              transition-colors duration-100" x-on:click="appsIsOpen = !appsIsOpen; appsPopupIsActive = appsIsOpen">
+              <i class="mdi mdi-apps text-gray-500"></i>
+            </button>
+
+            <button class="m-1">
+              <img src="https://avatars0.githubusercontent.com/u/17010054?v=4" alt="Avatar"
+                class="object-cover w-9 h-9 rounded-full border shado" />
+            </button>
+          </div>
+
+          <!-- Apps Container -->
+          <div class="apps-container flex flex-wrap absolute bg-white shadow-md 
+              right-5 top-18 px-4 py-2 rounded-md border h-96 
+              overflow-x-hidden overflow-y-scroll custom-scrollbar" x-show="appsIsOpen"
+            x-on:mouseleave="setTimeout(() => { appsIsOpen = appsPopupIsActive ? false : true }, 1000)"
+            x-on:mouseenter="appsPopupIsActive = true">
+            <template x-for="(app, index) in apps">
+              <!-- App -->
+              <div class="container h-20 w-20 mx-1 my-2 
+                hover:bg-blue-100 hover:cursor-pointer 
+                rounded-md transition-all duration-50" :title="app.name">
+                <!-- Icon -->
+                <img :src="app.icon" :alt="app.name" class="h-10 mx-auto mt-4" />
+
+                <!-- Name -->
+                <div class="text-sm text-center text-gray-700 select-none" x-text="app.name"></div>
+              </div>
+            </template>
+
+            <button class="border border-blue-200 text-center text-blue-600
+              hover:bg-blue-50/50 hover:text-blue-700
+              mx-auto px-3 py-1 mb-4 mt-10 rounded
+              transition-all duration-50">
+              More from Google
+            </button>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- Translator -->
+    <div class="before:content-[''] before:bg-gray-50 
+        before:h-24 before:w-full before:absolute
+        before:border-b before:border-gray-200
+        before:z-0 z-10">
+      <div class="container mx-auto px-0 lg:px-24">
+        <!-- Translation Source Buttons -->
+        <div class="flex">
+          <div class="py-4 z-10">
+            <!-- Active Button -->
+            <button class="rounded px-3 py-1 bg-blue-100
+            border border-blue-200 text-base text-blue-700 font-semibold
+            focus:outline-none focus:ring-1 focus:ring-blue-600">
+              <i class="mdi mdi-translate"></i>
+
+              Text
+            </button>
+
+            <!-- Normal Button -->
+            <button class="rounded px-3 py-1 ml-1
+            border border-blue-200 text-base text-blue-600 
+            focus:outline-none focus:ring-1 focus:ring-blue-600">
+              <i class="mdi mdi-file"></i>
+
+              Dcoument
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-row">
+          <div class="pb-4 top-32 h z-10 w-full">
+            <!-- Translator Container -->
+            <div class="bg-white rounded-lg border border-gray-200
+              drop-shadow-sm shadow-sm">
+              <!-- Language Bar -->
+              <div class="flex border-b border-gray-300">
+                <!-- From Languages -->
+                <div class="w-7/12">
+                  <nav class="flex flex-row rounded-tl-lg">
+                    <!-- Detect Language -->
+                    <button class="uppercase py-3.5 px-3
+                      text-gray-600 font-semibold 
+                      text-xs lg:text-sm
+                      rounded-tl-lg
+                      hover:bg-gray-50 hover:text-gray-700
+                      transition-colors duration-100">
+                      Detect Language
+                    </button>
+
+                    <!-- Lang: Turkish -->
+                    <button class="uppercase py-3.5 px-3
+                      text-gray-600 font-semibold 
+                      text-xs lg:text-sm
+                      hover:bg-gray-50 hover:text-gray-700
+                      transition-colors duration-100">
+                      Turkish
+                    </button>
+
+                    <!-- Lang: English -->
+                    <button class="uppercase py-3.5 px-3
+                      text-gray-600 font-semibold 
+                      text-xs lg:text-sm
+                      hover:bg-gray-50 hover:text-gray-700
+                      transition-colors duration-100
+                      text-blue-500 hover:text-blue-600
+                      border-b-2 border-blue-500 ">
+                      English
+                    </button>
+
+                    <!-- Lang: Turkish -->
+                    <button class="uppercase py-3.5 px-3
+                      text-gray-600 font-semibold 
+                      text-xs lg:text-sm
+                      hover:bg-gray-50 hover:text-gray-700
+                      transition-colors duration-100">
+                      Japanese
+                    </button>
+
+                    <!-- More Languages -->
+                    <button class="hover:bg-gray-100 rounded-full w-10 h-10 my-auto
+                      transition-colors duration-100">
+                      <i class="mdi mdi-chevron-down text-gray-500"></i>
+                    </button>
+                  </nav>
+                </div>
+
+                <!-- Switch Languages -->
+                <div class="w-1/12">
+                  <div class="flex items-center justify-center">
+                    <button class="hover:bg-gray-100 rounded-full 
+                      w-10 h-10 mt-1
+                      transition-colors duration-100">
+                      <i class="mdi mdi-swap-horizontal mdi-24px text-gray-600"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- To Languages -->
+                <div class="w-7/12">
+                  <nav class="flex flex-row rounded-tl-lg">
+                    <!-- Lang: English -->
+                    <button class="uppercase py-3.5 px-3
+                      text-gray-600 font-semibold 
+                      text-xs lg:text-sm
+                      hover:bg-gray-50 hover:text-gray-700
+                      transition-colors duration-100">
+                      English
+                    </button>
+
+                    <!-- Lang: Turkish -->
+                    <button class="uppercase py-3.5 px-3
+                      text-gray-600 font-semibold 
+                      text-xs lg:text-sm
+                      hover:bg-gray-50 hover:text-gray-700
+                      transition-colors duration-100
+                      text-blue-500 hover:text-blue-600
+                      border-b-2 border-blue-500 ">
+                      Turkish
+                    </button>
+
+                    <!-- Lang: Japanese -->
+                    <button class="uppercase py-3.5 px-3
+                      text-gray-600 font-semibold 
+                      text-xs lg:text-sm
+                      hover:bg-gray-50 hover:text-gray-700
+                      transition-colors duration-100">
+                      Japanese
+                    </button>
+
+                    <!-- More Languages -->
+                    <button class="hover:bg-gray-100 rounded-full w-10 h-10 my-auto
+                      transition-colors duration-100">
+                      <i class="mdi mdi-chevron-down text-gray-500"></i>
+                    </button>
+                  </nav>
+                </div>
+              </div>
+
+              <!-- Translate Inputs -->
+              <div class="flex">
+                <!-- Input Container -->
+                <div class="w-6/12 border-r border-gray-200 p-4">
+                  <div class="h-40">
+                    <div class="flex flex-row">
+                      <!-- Input Area -->
+                      <textarea class="resize-none w-full focus:outline-none
+                        text-base lg:text-2xl text-blak
+                        custom-scrollbar" rows="5" spellcheck="false" maxlength="5000" x-model="sourceText"
+                        x-on:keyup="translatedText = await translation(sourceText)"></textarea>
+
+                      <button class="hover:bg-gray-100 rounded-full 
+                          w-10 h-10 mt-1
+                          transition-colors duration-100" title="Clear" x-show="sourceText.length"
+                        x-on:click="sourceText = ''; translatedText = 'Translation';">
+                        <i class="mdi mdi-window-close mdi-24px text-red-400"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Input Buttons -->
+                  <div class="h-10">
+                    <div class="flex flex-grow">
+                      <div class="flex-none">
+                        <button class="hover:bg-gray-200 rounded-full 
+                          w-10 h-10
+                          transition-colors duration-100">
+                          <i class="mdi mdi-microphone mdi-24px text-gray-400"></i>
+                        </button>
+
+                        <button class="hover:bg-gray-200 rounded-full 
+                          w-10 h-10
+                          transition-colors duration-100" x-show="sourceText.length">
+                          <i class="mdi mdi-volume-high mdi-24px text-gray-600"></i>
+                        </button>
+                      </div>
+
+                      <div class="grow">
+                        <div class="flex float-right">
+                          <div class="text-sm text-gray-400 pt-5" x-text="`${sourceText.length}/5000`">
+                            0/5000
+                          </div>
+
+                          <button class="hover:bg-gray-200 rounded-full 
+                            w-10 h-10 mt-2 ml-2
+                            transition-colors duration-100">
+                            <i class="mdi mdi-keyboard-outline mdi-18px text-gray-600"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Output Container -->
+                <div class="w-6/12 bg-gray-100 rounded-br-lg p-4">
+                  <div class="h-40">
+                    <!-- Output Area -->
+                    <div class="text-base lg:text-2xl text-black h-10" :class="{ 'opacity-60' : !sourceText.length }"
+                      x-text="translatedText"></div>
+                  </div>
+
+                  <!-- Output Buttons -->
+                  <div class="h-10">
+                    <div class="flex flex-grow" x-show="sourceText.length">
+                      <div class="flex-none">
+                        <button class="hover:bg-gray-200 rounded-full 
+                          w-10 h-10 mt-1
+                          transition-colors duration-100">
+                          <i class="mdi mdi-volume-high mdi-24px text-gray-600"></i>
+                        </button>
+                      </div>
+
+                      <div class="grow">
+                        <div class="flex float-right">
+                          <button id="copy-translation" class="hover:bg-gray-200 rounded-full 
+                              w-10 h-10 mt-1
+                              transition-colors duration-100" :data-clipboard-text="translatedText"
+                            x-on:click="Toastify({text: 'Translation copied to your clipboard.', className: 'success rounded-md'}).showToast()">
+                            <i class="mdi mdi-content-copy mdi-18px text-gray-600"></i>
+                          </button>
+
+                          <button class="hover:bg-gray-200 rounded-full 
+                            w-10 h-10 mt-1
+                            transition-colors duration-100">
+                            <i class="mdi mdi-thumbs-up-down-outline mdi-18px text-gray-600"></i>
+                          </button>
+
+                          <button class="hover:bg-gray-200 rounded-full 
+                            w-10 h-10 mt-1
+                            transition-colors duration-100">
+                            <i class="mdi mdi-share-variant mdi-18px text-gray-600"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Buttons -->
+    <div class="flex flex-wrap items-center justify-center space-x-4 mt-20">
+      <!-- History -->
+      <div class="flex flex-col">
+        <button class="hover:bg-gray-50 rounded-full w-20 h-20 mr-2 
+          border border-gray-200
+          transition-colors duration-100">
+          <i class="mdi mdi-history mdi-32px text-gray-500"></i>
+        </button>
+
+        <div class="text-center text-sm mt-2 pr-2
+          text-base text-gray-500 font-semibold">
+          History
+        </div>
+      </div>
+
+      <!-- Saved Translations -->
+      <div class="flex flex-col">
+        <button class="hover:bg-gray-50 rounded-full w-20 h-20 mr-2 
+          border border-gray-200
+          transition-colors duration-100">
+          <i class="mdi mdi-star mdi-32px text-gray-500"></i>
+        </button>
+
+        <div class="text-center text-sm mt-2 pr-2
+          text-base text-gray-500 font-semibold">
+          Saved
+        </div>
+      </div>
+
+      <!-- Contribute -->
+      <div class="flex flex-col">
+        <button class="hover:bg-gray-50 rounded-full w-20 h-20 mr-2 
+          border border-gray-200
+          transition-colors duration-100">
+          <i class="mdi mdi-account-multiple-outline mdi-32px text-gray-500"></i>
+        </button>
+
+        <div class="text-center text-sm mt-2 pr-2
+          text-base text-gray-500 font-semibold">
+          Contribute
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="flex opacity-50">
+      <span class="text-center font-bold my-20 mx-auto">
+        MDI icons used (npm i @mdi/font)
+
+        <hr class="my-4">
+
+        <a href="https://egoistdeveloper.github.io/twcss-to-sass/" target="_blank" class="text-blue-600">
+          Convert this template to SASS
+        </a>
+
+        <hr class="my-4">
+
+        <a href="https://www.flaticon.com/packs/google-suite-16?word=google%20suite" target="_blank"
+          class="text-blue-600">
+          Google Suite Icons
+        </a>
+      </span>
+    </div>
+  </div>
+
+  <script>
+    function appInit() {
+      new ClipboardJS('#copy-translation');
+    }
+
+    async function translation(sourceText) {
+      if (sourceText) {
+        if (sourceText.length > 0 && sourceText.length < 5001) {
+          return await translate(sourceText, {
+            from: 'en',
+            to: 'tr',
+            cache: 60 * 60 * 24
+          });
+        }
+      }
+
+      return 'Translation';
+    }
+
+    const apps = [{
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965306.png",
+        name: "Gmail",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965278.png",
+        name: "Search",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965363.png",
+        name: "Youtube",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965283.png",
+        name: "Translate",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965311.png",
+        name: "Photos",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965293.png",
+        name: "Calendar",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965323.png",
+        name: "Drive",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965281.png",
+        name: "Maps",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965274.png",
+        name: "Hangouts",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965358.png",
+        name: "Keep",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965317.png",
+        name: "Adwords",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965327.png",
+        name: "Sheets",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965330.png",
+        name: "Business",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965360.png",
+        name: "Forms",
+      },
+      {
+        icon: "https://cdn-icons-png.flaticon.com/512/2965/2965297.png",
+        name: "News",
+      },
+    ];
+  </script>
+</body>
+
+</html>
