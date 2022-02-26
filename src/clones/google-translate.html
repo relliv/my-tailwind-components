@@ -179,6 +179,7 @@
           </div>
         </div>
 
+        <!-- Body -->
         <div class="flex flex-row">
           <div class="pb-4 top-32 h z-10 w-full">
             <!-- Translator Container -->
@@ -465,6 +466,11 @@
       new ClipboardJS('#copy-translation');
     }
 
+    /**
+     * Trasnaltes text from source language to target language
+     * 
+     * @param {string} sourceText
+     */
     async function translation(sourceText) {
       if (sourceText) {
         if (sourceText.length > 0 && sourceText.length < 5001) {
