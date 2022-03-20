@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spotify Cencept Rework</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn-tailwindcss.vercel.app/"></script>
+
+    <!-- AlpineJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.8.1/cdn.min.js" defer></script>
+
+    <style>
+        /* Slider */
+
+        .x-slider * {
+            width: 350px !important;
+        }
+
+        .x-slider input::-webkit-slider-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #636363;
+            border: 5px solid #24c55d;
+            box-shadow: 0px 0px 40px -4px rgba(0, 0, 0, 0.76);
+            transition: all 0.1s ease-in-out;
+            outline: none;
+            appearance: none;
+        }
+
+        .x-slider input::-webkit-slider-thumb:hover {
+            border-color: #1bb350;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Slider Component Container -->
+    <div class="flex flex-col items-center justify-center mt-52">
+        <!-- App -->
+        <div class="bg-white p-10 rounded-md shadow-lg" x-cloak x-data="appData()" x-init="appInit()">
+            <!-- Player -->
+            <div class="relative">
+                <!-- Player Slider Container -->
+                <div class="x-slider flex relative my-3">
+                    <!-- Player Slider -->
+                    <div class="x-slider inline justify-center rounded-md">
+                        <!-- Range Input -->
+                        <input class="absolute bg-transparent rounded-md
+                            z-10 h-1 w-80 outline-0 appearance-none" type="range"
+                            step="1" min='0' max="100" value="0"
+                            x-model="sliderValue"
+                            x-on:change.debounce="sliderProgressTime = sliderProgressToTime(sliderValue, songLength)">
+
+                        <!-- Slider Placeholder -->
+                        <div class="absolute z-0 w-80 h-0.5 mt-0.5 rounded-md bg-gray-500/70"></div>
+
+                        <!-- Progress -->
+                        <div class="absolute z-0 w-80 h-1.5 rounded-md bg-green-600
+                            bg-gradient-to-r from-emerald-700 to-green-500"
+                            x-bind:style="'width: ' + (sliderValue * 3.5) + 'px !important; '"></div>
+                        <!-- x-slider is width 350px -->
+                    </div>
+                </div>
+
+                <!-- Duration Container -->
+                <div class="flex flex-row flex-grow justify-start px-0.5">
+                    <!-- Current Time -->
+                    <div class="text-gray-500/90 text-sm select-none" x-text="sliderProgressTime"></div>
+
+                    <!-- Grow Space -->
+                    <div class="grow"></div>
+
+                    <!-- Total Time -->
+                    <div class="text-gray-400/90 text-sm select-none pr-1" x-text="secondsToDuration(songLength)"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <span class="text-center font-bold my-20">
+            <a href="https://egoistdeveloper.github.io/twcss-to-sass-playground/" target="_blank" class="text-blue-600">
+                Convetert to SASS
+            </a>
+        </span>
+    </div>
+
+    <script>
+        function appData() {
+            return {
+                sliderValue: 50,
+                songLength: 250,
+                sliderProgressTime: '00:00',
+    
+                appInit() {
+                    this.sliderProgressTime = this.sliderProgressToTime(this.sliderValue, this.songLength);
+                },
+    
+                /*
+                * Convert slider value to time
+                */
+                secondsToDuration(seconds) {
+                    var minutes = Math.floor(seconds / 60).toFixed(0),
+                        seconds = Math.floor(seconds % 60).toFixed(0);
+    
+                    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+                },
+    
+                /*
+                * Slider progress value to time
+                */
+                sliderProgressToTime(sliderValue, songLength) {
+                    return this.secondsToDuration((songLength / 100) * sliderValue);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
