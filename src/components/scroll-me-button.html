@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pan-Zoom Control</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn-tailwindcss.vercel.app/"></script>
+
+    <style>
+        .scroll-me .scroll-button {
+            width: 6px;
+            border-width: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex flex-col justify-center h-screen" x-cloak x-data="appData()" x-init="appInit()">
+        <!-- Notes -->
+        <span class="text-center font-bold my-20">
+            <a href="https://egoistdeveloper.github.io/twcss-to-sass-playground/" target="_blank" class="text-blue-600">
+                Convetert to SASS
+            </a>
+        </span>
+    
+        <!-- Section Container -->
+        <div class="flex justify-center h-screen items-end p-10 bg-gray-50">
+            <!-- Scroll Me Button -->
+            <button class="scroll-me animate-pulse" title="Scroll to Next Section">
+                <!-- Mouse -->
+                <div class="border-2 border-gray-500 w-4 h-7 animate-bounce rounded-lg">
+                    <!-- Scroll Button -->
+                    <div class="scroll-button border-gray-500 h-3 mx-auto mt-1 rounded-xl"></div>
+                </div>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
