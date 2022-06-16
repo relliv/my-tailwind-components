@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alert Bars</title>
+
+    <!-- MDI Icons -->
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css" />
+
+    <!-- Tailwind -->
+    <script src="https://cdn-tailwindcss.vercel.app/"></script>
+
+    <!-- AlpineJS -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- clipboard.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+
+    <!-- toastify.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.js"></script>
+</head>
+
+<body>
+    <div x-data="" x-init="appInit();" class="flex flex-col items-center justify-center min-h-screen bg-white mt-10 mb-20">
+        <!-- Notes -->
+        <div class="flex opacity-50">
+            <span class="text-center font-bold mb-10 mx-auto">
+                MDI icons used (npm i @mdi/font)
+
+                <hr class="my-4">
+
+                <a href="https://egoistdeveloper.github.io/twcss-to-sass-playground/" target="_blank"
+                    class="text-blue-600">
+                    Convert this template to SASS
+                </a>
+
+                <hr class="my-4">
+
+                <p>
+                    Hint: Click to copy to clipboard selected alert component.
+                </p>
+            </span>
+        </div>
+
+        <template x-for="color in colors">
+            <!-- Alerts Container -->
+            <div class="flex flex-row flex-wrap space-x-5 space-y-10">
+                <template x-for="roundLevel in roundLevels">
+                    <!-- Alert -->
+                    <div class="flex justify-center items-center py-4 px-5 min-w-[350px] max-w-[450px]
+                        rounded-md shadow-sm cursor-default
+                        transition-all duration-100" :class="roundLevel + ' bg-'+color.name+'-200'"
+                        x-data="{ html: getAlertHtml(roundLevel, color) }" :data-clipboard-text="html" id="copy-html"
+                        x-on:click="Toastify({text: 'Component HTML copied to your clipboard.', className: 'success rounded-md'}).showToast()">
+                        <!-- Badge -->
+                        <div class="flex justify-center items-center h-12 w-12 min-w-[50px]"
+                            :class="roundLevel + ' bg-gradient-to-b from-'+color.name+'-100 to-'+color.name+'-300 text-'+color.name+'-800'">
+                            <!-- Icon -->
+                            <i class="mdi mdi-24px" :class="color.icon"></i>
+                        </div>
+
+                        <div class="flex flex-col px-4">
+                            <!-- Title -->
+                            <h6 class="font-semibold text-base capitalize" :class="'text-'+color.name+'-800"
+                                x-text="color.name"></h6>
+
+                            <!-- Description -->
+                            <p class="text-sm pt-[5px]" :class="'text-'+color.name+'-700">
+                                Anim irure consectetur duis anim veniam qui...
+                            </p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+
+    <script>
+        function appInit() {
+            new ClipboardJS('#copy-html');
+        }
+
+        const roundLevels = [
+            'rounded-lg',
+            'rounded-xl',
+            'rounded-2xl',
+            'rounded-full',
+        ];
+
+        const colors = [{
+                name: 'emerald',
+                icon: 'mdi-check-circle-outline'
+            },
+            {
+                name: 'sky',
+                icon: 'mdi-information-outline'
+            },
+            {
+                name: 'orange',
+                icon: 'mdi-alert-circle-outline'
+            },
+            {
+                name: 'rose',
+                icon: 'mdi-close-circle-outline'
+            },
+            {
+                name: 'violet',
+                icon: 'mdi-help-circle-outline'
+            }
+        ];
+
+        function getAlertHtml(roundLevel, color) {
+            return `
+                    <!-- Alert -->
+                    <div class="flex justify-center items-center py-4 px-5 min-w-[350px] max-w-[450px]
+                        rounded-md shadow-sm cursor-default
+                        transition-all duration-100 ` + roundLevel + ` bg-` + color.name + `-200">
+                        <!-- Badge -->
+                        <div class="flex justify-center items-center h-12 w-12 min-w-[50px]
+                            ` + roundLevel + ` bg-gradient-to-b from-` + color.name + `-100 to-` + color.name +
+                `-300 text-` + color.name + `-800">
+                            <!-- Icon -->
+                            <i class="mdi mdi-24px" :class="color.icon"></i>
+                        </div>
+
+                        <div class="flex flex-col px-4">
+                            <!-- Title -->
+                            <h6 class="font-semibold text-base capitalize text-` + color.name + `-800">
+                                ` + color.name + `
+                            </h6>
+
+                            <!-- Description -->
+                            <p class="text-sm pt-[5px] text-` + color.name + `-700">
+                                Anim irure consectetur duis anim veniam qui
+                            </p>
+                        </div>
+                    </div>`;
+        }
+    </script>
+</body>
+
+</html>
