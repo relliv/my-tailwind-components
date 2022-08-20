@@ -64,8 +64,11 @@ function updateList(newData) {
         }
     });
 }
+const baseDemoUrl = 'https://egoistdeveloper.github.io/my-tailwind-components/';
 
-const folderTree = getAllFiles('./').map((x) => `${'\t'.repeat(x.depth)}- [${x.name}](${x.path})`).join('\n');
+const folderTree = getAllFiles('./').map((x) => {
+    return `${'\t'.repeat(x.depth)}- [${x.name}](${x.path}) ⚡ [demo](${baseDemoUrl}/${x.path})`;
+}).join('\n');
 
 updateList(folderTree);
 
