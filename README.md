@@ -1,8 +1,6 @@
-# my-tailwind-components
+# 🎉 my-tailwind-components
 
-My awesome tailwind templates 🎉
-
-Also you can see all demos at [here](https://egoistdeveloper.github.io/my-tailwind-components/)
+My awesome tailwind templates. Also you can see all demos at [here](https://egoistdeveloper.github.io/my-tailwind-components/).
 
 ## Content List
 
