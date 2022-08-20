@@ -23,7 +23,7 @@ function getAllFiles(dirPath, fileArray, depth = 0) {
             // get each path
             fileArray.push({
                 name: file,
-                path: './' + path.join('./src/', dirPath, file).replace(/\\/g, '/'),
+                path: './' + path.join('./src', dirPath, file).replace(/\\/g, '/'),
                 depth: depth,
                 isDir: isDir
             });
@@ -67,7 +67,7 @@ function updateList(newData) {
         }
     });
 }
-const baseDemoUrl = 'https://egoistdeveloper.github.io/my-tailwind-components/';
+const baseDemoUrl = 'https://egoistdeveloper.github.io/my-tailwind-components';
 
 const folderTree = getAllFiles('./').map((x) => {
     return x.isDir 
