@@ -18,15 +18,18 @@ function getAllFiles(dirPath, fileArray, depth = 0) {
     files.forEach(function (file) {
         // ignore this file
         if (file !== 'markdown.js') {
+            const isDir = fs.statSync(dirPath + "/" + file).isDirectory();
+
             // get each path
             fileArray.push({
                 name: file,
                 path: './' + path.join('./src/', dirPath, file).replace(/\\/g, '/'),
-                depth: depth
+                depth: depth,
+                isDir: isDir
             });
     
             // also get sub-folders and contents
-            if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+            if (isDir) {
                 fileArray = getAllFiles(dirPath + "/" + file, fileArray, depth + 1);
             }
         }
@@ -67,7 +70,9 @@ function updateList(newData) {
 const baseDemoUrl = 'https://egoistdeveloper.github.io/my-tailwind-components/';
 
 const folderTree = getAllFiles('./').map((x) => {
-    return `${'\t'.repeat(x.depth)}- [${x.name}](${x.path}) ⚡ [demo](${baseDemoUrl}/${x.path})`;
+    return x.isDir 
+        ? `${'\t'.repeat(x.depth)}- 📂 [${x.name}](${x.path})`
+        : `${'\t'.repeat(x.depth)}- 📕 [${x.name}](${x.path}) ⚡ [demo](${baseDemoUrl}/${x.path})`;
 }).join('\n');
 
 updateList(folderTree);
