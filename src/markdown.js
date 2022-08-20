@@ -21,10 +21,9 @@ function getAllFiles(dirPath, fileArray, depth = 0) {
             // get each path
             fileArray.push({
                 name: file,
-                path: path.join('./src/', dirPath, file),
+                path: './' + path.join('./src/', dirPath, file).replace(/\\/g, '/'),
                 depth: depth
             });
-            // fileArray.push('\t'.repeat(depth) + '- ' +  path.join('./src/', dirPath, file));
     
             // also get sub-folders and contents
             if (fs.statSync(dirPath + "/" + file).isDirectory()) {
