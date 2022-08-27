@@ -17,6 +17,7 @@ My awesome tailwind templates. Also you can see all demos at [here](https://egoi
 	- 📕 [panzoom-control.html](./src/components/panzoom-control.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/components/panzoom-control.html)
 	- 📕 [player-slider.html](./src/components/player-slider.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/components/player-slider.html)
 	- 📕 [question-listing-item-card.html](./src/components/question-listing-item-card.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/components/question-listing-item-card.html)
+	- 📕 [responsive-card-list.html](./src/components/responsive-card-list.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/components/responsive-card-list.html)
 	- 📕 [scroll-me-button.html](./src/components/scroll-me-button.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/components/scroll-me-button.html)
 	- 📕 [spinners.html](./src/components/spinners.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/components/spinners.html)
 	- 📕 [story-bar.html](./src/components/story-bar.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/components/story-bar.html)
