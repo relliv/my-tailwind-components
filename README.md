@@ -31,6 +31,7 @@ My awesome tailwind templates. Also you can see all demos at [here](https://egoi
 	- 📕 [404-page-template.html](./src/templates/404-page-template.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/templates/404-page-template.html)
 	- 📕 [login-form.html](./src/templates/login-form.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/templates/login-form.html)
 	- 📕 [our-team.html](./src/templates/our-team.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/templates/our-team.html)
+	- 📕 [parallax-landing-page.html](./src/templates/parallax-landing-page.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/templates/parallax-landing-page.html)
 	- 📕 [responsive-footer.html](./src/templates/responsive-footer.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/templates/responsive-footer.html)
 	- 📕 [social-media-landing-page-mobile.html](./src/templates/social-media-landing-page-mobile.html) ⚡ [demo](https://egoistdeveloper.github.io/my-tailwind-components/./src/templates/social-media-landing-page-mobile.html)
 <!-- TABLE_END -->
