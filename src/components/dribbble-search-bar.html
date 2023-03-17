@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Dribbble Search Bar</title>
+
+		<!-- Tailwind -->
+		<script src="https://cdn-tailwindcss.vercel.app/"></script>
+
+		<!-- MDI Icons -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css" />
+
+		<!-- AlpineJS -->
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.8.1/cdn.min.js"
+			defer></script>
+	</head>
+
+	<body>
+		<div
+			class="flex h-screen flex-col justify-center"
+			x-cloak
+			x-data="appData()">
+			<!-- Notes -->
+			<span class="my-20 text-center font-bold">
+				<a
+					href="https://pictogrammers.com/library/mdi/icon/chevron-down/"
+					target="_blank"
+					class="text-blue-600">
+					MDI Icons
+				</a>
+
+				<hr class="my-4" />
+
+				<a
+					href="https://egoistdeveloper.github.io/twcss-to-sass-playground/"
+					target="_blank"
+					class="text-blue-600">
+					Convetert to SASS
+				</a>
+			</span>
+
+			<div x-data="appData()" x-init="appInit()" class="mb-">
+				<!-- Search Bar Container -->
+				<div
+					class="relative m-20 flex flex-row rounded-xl bg-white px-4 py-7 align-middle shadow-[0_0px_30px_1px_rgb(0,0,0,0.09)]">
+					<!-- Search Icon -->
+					<span
+						class="mdi mdi-magnify mdi-36px mx-4 mt-2 h-8 leading-10 text-gray-400"></span>
+
+					<!-- Input -->
+					<input
+						type="text"
+						class="w-full border-0 text-2xl text-gray-800 outline-0"
+						placeholder="Search..."
+						x-model="searchTerm" />
+
+					<!-- Clear Icon -->
+					<template x-if="searchTerm && searchTerm.length > 0">
+						<button class="rounded-full px-0" x-on:click="searchTerm = null">
+							<span
+								class="mdi mdi-close-circle mdi-24px mx-4 mt-1 h-8 leading-10 text-gray-400"></span>
+						</button>
+					</template>
+
+					<!-- Divider -->
+					<div class="mx-5 h-10 border-l-2 border-l-gray-200"></div>
+
+					<!-- Dropdown -->
+					<button
+						class="ali flex min-w-[200px] flex-row justify-between rounded-lg bg-white px-4 hover:bg-gray-100 transition-all duration-300 ease-in-out"
+						x-on:click="showSearhCategoryDropdown = !showSearhCategoryDropdown">
+						<span
+							class="mt-1 text-2xl font-semibold text-gray-700"
+							x-text="selectedCategoryType">
+							<!-- Placeholder -->
+						</span>
+
+						<span
+							class="mdi mdi-chevron-down mdi-36px ml-2 mt-2 h-8 leading-10 text-gray-700"></span>
+					</button>
+
+					<!-- Dropdown -->
+					<ul
+						class="absolute right-5 top-[120px] flex flex-col min-w-[200px] list-none shadow-[0_0px_30px_1px_rgb(0,0,0,0.09)] bg-white rounded-lg border border-gray-200/70"
+						x-show="showSearhCategoryDropdown">
+						<li
+							class="text-lg text-violet-600 hover:bg-gray-100 transition-all duration-300 ease-in-out px-5 py-4 cursor-pointer"
+							x-on:click="onCategoryClick('Shots')">
+							Shots
+						</li>
+
+						<li
+							class="text-lg hover:bg-gray-100 transition-all duration-300 ease-in-out px-5 py-4 cursor-pointer"
+							x-on:click="onCategoryClick('Marketplace')">
+							Marketplace
+						</li>
+
+						<li
+							class="text-lg hover:bg-gray-100 transition-all duration-300 ease-in-out px-5 py-4 cursor-pointer"
+							x-on:click="onCategoryClick('Members')">
+							Members
+						</li>
+
+						<li
+							class="text-lg hover:bg-gray-100 transition-all duration-300 ease-in-out px-5 py-4 cursor-pointer"
+							x-on:click="onCategoryClick('Teams')">
+							Teams
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			function appData() {
+				return {
+					searchTerm: null,
+					showSearhCategoryDropdown: false,
+					selectedCategoryType: "Shots",
+
+					onCategoryClick(type) {
+						this.showSearhCategoryDropdown = false;
+						this.selectedCategoryType = type;
+					},
+				};
+			}
+		</script>
+	</body>
+</html>
